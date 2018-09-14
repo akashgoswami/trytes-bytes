@@ -10,6 +10,7 @@ var BYTE_HASH_LENGTH = 48;
 // All possible tryte values
 var trytesAlphabet = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
 // map of all trits representations
 var trytesTrits = [
     [ 0,  0,  0],
@@ -181,6 +182,28 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
   return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
 }
 
+
+
+function json2table(json) {
+  
+  
+  var keys = Object.keys(json);
+  
+  var output ='<h3>IOTA transaction</h3><table class="table table-responsive text-left"><tbody>';
+  
+  keys.map(function(key){
+    if (key != "signatureMessageFragment"){
+      output += "<tr class='table-active'><td>" +key + "</td><td>" + json[key] + "</td></tr>";
+    }
+  });
+ 
+  output += '</tbody></table>'; 
+
+  return output;
+}
+
+
+
 var app = new Vue({
       el: '#app',
       data: {
@@ -188,6 +211,7 @@ var app = new Vue({
         trytes: "",
         bytes:"",
         trits:"",
+        tritsArray: [],
         trytesValid: true,
         bytesValid: true,
         showTrits: false,
@@ -203,6 +227,7 @@ var app = new Vue({
                 trits = trits.concat(new Array(5- trits.length % 5).fill(0));
               }
               self.trits = trits.toString();
+              self.tritsArray = trits;
               var payload = Trits2Bytes(trits);
               self.bytes = buf2hex(payload).toUpperCase();
           },
@@ -213,11 +238,24 @@ var app = new Vue({
                 trits = trits.concat(new Array(3- trits.length % 3).fill(0));
               }              
               self.trits = trits.toString();
+              self.tritsArray = trits;
               var payload = Trits2Trytes(trits);
               self.trytes = payload;
           },
           getByteMap: function(){
             return tritList;
+          },
+          decode : function (){
+                var txobject = iotaUtils.transactionObject(this.trytes);
+                swal({
+                  
+                  html: '<pre>'+json2table(txobject)+"</pre>",
+                  inputPlaceholder: 'Type your message here...',
+                  showCancelButton: true,
+                  width: "50%",
+                }).cancel();
+
+           
           }
       },
       watch: {

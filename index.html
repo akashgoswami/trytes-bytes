@@ -40,14 +40,53 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container-fluid">
 
+
+
+
+
+
+            <div id="myModal" class="modal" role="dialog">
+              <div class="modal-dialog">
+            
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+            
+              </div>
+            </div>
+
+
+
+
+
+
+
     <div class="row" id="app">
       
       <div class="col-lg-8 col-md-6" >
 
         <div style="margin-top:5%; margin-left:5%;">
           <h3>Trytes - Binary converter. </h3>
-          <small>This page converts Trytes ASCII representation to Bytes hex values (trit5) and vice versa. For a perfect conversion, Trytes should be 5 char aligned.</small>
-           <h6 class="mt-2">Trytes</h6>  
+          <small>This tool converts IOTA Trytes (ASCII) to Bytes (hex values) and vice versa. For a perfect conversion, Trytes should be 5 char aligned.</small>
+          
+          <div class="row">
+            <div  class="col-sm-6">
+           <h6 class="mt-2">Trytes <small>(Length {{trytes.length}})</small></h6> 
+           </div>
+           <div  class="col-sm-6">
+           <button v-on:click="decode" :disabled="(trytes.length < 2700)" class="btn btn-info m-1" style="float:right;"><i class="fa "></i> Decode as Transaction</button>
+            </div>
+          </div>
            <textarea class="form-control" v-model="trytes"  v-bind:class="[trytesValid ? 'is-valid':'is-invalid']" rows="10" style="z-index: auto; margin-bottom:20px;position: relative; line-height: 24px; font-size: 16px; transition: none;"></textarea>
            <p v-show="!trytesValid">Trytes Value Invalid</p>
            <div class="row">
@@ -64,11 +103,11 @@
            
            </div>
            
-           <h6 v-show="showTrits" class="mt-2">Trits</h6>
+           <h6 v-show="showTrits" class="mt-2">Trits <small>(Length {{tritsArray.length}})</small></h6>
            <textarea id="trits" v-show="showTrits" class="form-control" v-model="trits" rows="10" style="z-index: auto; position: relative; line-height: 24px; font-size: 16px; transition: none;"></textarea> 
            
            
-           <h6 class="mt-2">Bytes</h6>  
+           <h6 class="mt-2">Bytes <small>(Length {{Math.floor(bytes.length/2)}})</small></h6> 
            <textarea id="bytes" v-model="bytes" v-bind:class="[bytesValid ? 'is-valid':'is-invalid']" class="form-control" rows="10" style="z-index: auto; position: relative; line-height: 24px; font-size: 16px; transition: none;">
             </textarea>  
            <p>For a perfect conversion, Input bytes should be aligned by 3.</p>
@@ -126,7 +165,8 @@
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
-<script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.28/dist/sweetalert2.all.min.js" integrity="sha256-z/RJYI1Ut2RFq7kFRcar1CERT1w8qQdoVaUN8jLV+Nc=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-<script src="./app.js"></script>
+<script src="js/app.js"></script>
+<script src="js/util.js"></script>
 </html>
